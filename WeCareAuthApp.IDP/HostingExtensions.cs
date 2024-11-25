@@ -1,4 +1,8 @@
 using Serilog;
+using Microsoft.EntityFrameworkCore;
+using WeCareAuthApp.IDP;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WeCareAuthApp.API
 {
@@ -6,8 +10,12 @@ namespace WeCareAuthApp.API
     {
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
-            // uncomment if you want to add a UI
-            //builder.Services.AddRazorPages();
+            builder.Services.AddDbContext<UserDbContext>(options =>
+     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnString")));
+
+            builder.Services.AddIdentity<User, Role>()
+            .AddEntityFrameworkStores<UserDbContext>()
+            .AddDefaultTokenProviders();
 
             builder.Services.AddIdentityServer(options =>
                 {
@@ -16,29 +24,42 @@ namespace WeCareAuthApp.API
                 })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients);
-
+                .AddInMemoryClients(Config.Clients)
+                .AddAspNetIdentity<User>()
+                .AddDeveloperSigningCredential();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddControllers();
             return builder.Build();
         }
 
-        public static WebApplication ConfigurePipeline(this WebApplication app)
+        public static  WebApplication ConfigurePipeline(this WebApplication app)
         {
-            app.UseSerilogRequestLogging();
+            //app.UseSerilogRequestLogging();
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    await UserDbContextSeeder.SeedTestData(services);
+            //}
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity Provider IDP");
+                }
+                );
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                app.UseStaticFiles();
+                app.UseRouting();
+                app.UseIdentityServer();
+                app.UseAuthentication();
 
-            // uncomment if you want to add a UI
-            //app.UseStaticFiles();
-            //app.UseRouting();
+                app.UseAuthorization();
 
-            app.UseIdentityServer();
-
-            // uncomment if you want to add a UI
-            //app.UseAuthorization();
-            //app.MapRazorPages().RequireAuthorization();
+                app.MapControllers();
+                app.MapGet("/", () => "Hello");
 
             return app;
         }
