@@ -25,7 +25,8 @@ namespace WeCareAuthApp.API
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
-                .AddAspNetIdentity<User>();
+                .AddAspNetIdentity<User>()
+                .AddDeveloperSigningCredential();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
             return builder.Build();
@@ -51,10 +52,9 @@ namespace WeCareAuthApp.API
                     app.UseDeveloperExceptionPage();
                 }
                 app.UseStaticFiles();
-                app.UseIdentityServer();
-
-
                 app.UseRouting();
+                app.UseIdentityServer();
+                app.UseAuthentication();
 
                 app.UseAuthorization();
 

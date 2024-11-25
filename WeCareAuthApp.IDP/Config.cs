@@ -23,13 +23,14 @@ namespace WeCareAuthApp.API
                 {
                     new Client()
                     {
-                        ClientName = "testclient",
+                        ClientName = "testclient",                                                                                                                         
                         ClientId=   "testclientid",
-                        AllowedGrantTypes= GrantTypes.Code,
+                        AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                         RedirectUris =
                         {
-                            "https://localhost:5000/signin-oidc"
+                            "https://localhost:5000/signin-oidc?code=AUTHORIZATION_CODE"
                         },
+                        RequirePkce = false,
                         AllowedScopes =
                         {
                             IdentityServerConstants.StandardScopes.OpenId,

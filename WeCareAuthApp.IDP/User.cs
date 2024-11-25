@@ -4,6 +4,7 @@ namespace WeCareAuthApp.IDP
 {
     public class User : IdentityUser
     {
+
        
     }
 }
