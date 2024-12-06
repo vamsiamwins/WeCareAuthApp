@@ -34,6 +34,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnString")))
     builder.Services.AddHttpClient<TokenClient>();
     builder.Services.AddSwaggerGen();
     builder.Services.AddControllers();
+    builder.Services.AddMemoryCache();
     //var app = builder
     //    .ConfigureServices()
     //    .ConfigurePipeline();
