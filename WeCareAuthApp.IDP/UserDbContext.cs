@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using WeCareAuthApp.IDP.Models;
 
 namespace WeCareAuthApp.IDP
 {

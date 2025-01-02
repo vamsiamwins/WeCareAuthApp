@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System.Security.Policy;
 using Microsoft.Extensions.Caching.Memory;
+using WeCareAuthApp.IDP.Models;
 
 namespace WeCareAuthApp.IDP.Controllers
 {

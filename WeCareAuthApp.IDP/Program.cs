@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using WeCareAuthApp.API;
 using WeCareAuthApp.IDP;
+using WeCareAuthApp.IDP.Models;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -15,6 +16,9 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<UserDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnString")));
+
+    builder.Services.AddDbContext<AuthDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnString")));
 
     builder.Services.AddIdentity<User, Role>()

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WeCareAuthApp.IDP;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using WeCareAuthApp.IDP.Models;
 
 namespace WeCareAuthApp.API
 {
